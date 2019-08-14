@@ -4,14 +4,14 @@ class Shiphawk_Shipping_Block_Adminhtml_Sales_Order_Shipment_View extends Mage_A
 
         parent::__construct();
 
-        if ($this->getShipment()->getId()) {
+      /*  if ($this->getShipment()->getId()) {
             $this->_addButton('subscribe', array(
                     'label'     => Mage::helper('sales')->__('Subscribe to Tracking Information'),
                     'class'     => 'save',
                     'onclick'   => 'setLocation(\''.$this->getShipTrackUrl($this->getShipment()->getId()).'\')'
                 )
             );
-        }
+        }*/
     }
 
     public function getShipTrackUrl($shipment_id) {

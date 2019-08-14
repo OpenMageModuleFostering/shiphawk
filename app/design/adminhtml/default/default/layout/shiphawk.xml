@@ -4,22 +4,124 @@
     <adminhtml_catalog_product_edit>
 
         <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>shiphawk/shiphawk.js</name>
 
-            <action method="addJs"><script>shiphawk/shiphawk.js</script></action>
+                <aParams>id="shiphawkjsfile"</aParams>
+            </action>
 
             <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
 
         </reference>
+        <reference name="content">
+            <block type="core/template" name="shiphawkjsfile" template="shiphawk/shiphawkjsfile.phtml"/>
+        </reference>
     </adminhtml_catalog_product_edit>
+
+    <adminhtml_catalog_product_action_attribute_edit>
+
+        <reference name="head">
+
+            <action method="addItem">
+                <type>js</type>
+                <name>shiphawk/shiphawk.js</name>
+                <aParams>id="shiphawkjsfile"</aParams>
+            </action>
+
+            <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
+
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="shiphawkjsfile" template="shiphawk/shiphawkjsfile.phtml"/>
+        </reference>
+    </adminhtml_catalog_product_action_attribute_edit>
 
     <adminhtml_catalog_product_new>
         <reference name="head">
 
-            <action method="addJs"><script>shiphawk/shiphawk.js</script></action>
+            <action method="addItem">
+                <type>js</type>
+                <name>shiphawk/shiphawk.js</name>
+                <aParams>id="shiphawkjsfile"</aParams>
+            </action>
 
             <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
 
         </reference>
+        <reference name="content">
+            <block type="core/template" name="shiphawkjsfile" template="shiphawk/shiphawkjsfile.phtml"/>
+        </reference>
     </adminhtml_catalog_product_new>
 
+    <adminhtml_sales_order_view>
+        <reference name="head">
+
+            <action method="addJs"><script>shiphawk/shiphawk_shipment.js</script></action>
+
+            <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
+
+            <action method="addItem">
+                <type>js_css</type>
+                <name>prototype/windows/themes/default.css</name>
+            </action>
+            <action method="addCss">
+                <name>lib/prototype/windows/themes/magento.css</name>
+            </action>
+
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="shiphawkjsfile" template="shiphawk/shiphawkjsfile.phtml"/>
+        </reference>
+    </adminhtml_sales_order_view>
+
+    <adminhtml_origins_index>
+        <reference name="content">
+            <block type="shiphawk_shipping/adminhtml_origins" name="origins.grid_container" />
+        </reference>
+    </adminhtml_origins_index>
+
+    <adminhtml_origins_new>
+        <update handle="adminhtml_origins_edit"/>
+    </adminhtml_origins_new>
+
+    <adminhtml_origins_edit>
+        <reference name="content">
+            <block type="shiphawk_shipping/adminhtml_origins_edit" name="origins.edit" />
+        </reference>
+    </adminhtml_origins_edit>
+
+    <shiphawk_shipping_adminhtml_shipment_newshipment>
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
+        </reference>
+    </shiphawk_shipping_adminhtml_shipment_newshipment>
+
+    <adminhtml_sales_order_view>
+        <reference name="order_tab_info">
+            <action method="setTemplate">
+                <template>shiphawk/amount.phtml</template>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+
+    <adminhtml_sales_order_shipment_view>
+        <reference name="form">
+            <action method="setTemplate">
+                <template>shiphawk/shipping/form.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="shiphawkjsfile" template="shiphawk/shiphawkjsfile.phtml"/>
+        </reference>
+    </adminhtml_sales_order_shipment_view>
+
+    <adminhtml_sales_order_create_index>
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>shiphawk/shiphawk_order.js</name>
+            </action>
+        </reference>
+    </adminhtml_sales_order_create_index>
 </layout>

@@ -2,18 +2,20 @@
 $installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
 $installer->startSetup();
 
-$address_line_2_origin_data = array (
+$origin_email = array (
     'attribute_set' =>  'Default',
     'group' => 'ShipHawk Attributes',
-    'label'    => 'Origin Address 2',
+    'label'    => 'Origin Email',
     'visible'     => true,
     'type'     => 'varchar',
+    'apply_to'          => 'simple',
     'input'    => 'text',
     'system'   => false,
     'required' => false,
     'user_defined' => 1,
 );
 
-$installer->addAttribute('catalog_product','shiphawk_origin_addressline2',$address_line_2_origin_data);
+$installer->addAttribute('catalog_product','shiphawk_origin_email', $origin_email);
+
 
 $installer->endSetup();
