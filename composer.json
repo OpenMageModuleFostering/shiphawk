@@ -1,12 +1,12 @@
 {
     "name": "OpenMageModuleFostering/ShipHawk",
     "type": "magento-module",
-    "license": "Open-Software-License-(OSL)",
+    "license": "free",
     "homepage": "",
-    "description": "This extension allows ShipHawk clients to integrate quickly and easily with their Magento platform so that they can get rates, provide shipping details to customers browsing their website, automatically fulfill shipments thru ShipHawk and get tracking updates all from their existing Magento platform.",
+    "description": "-",
     "authors": [
     {
-        "name": "Mikel Richardson",
+        "name": "ShipHawk",
         "email": "mikel@shiphawk.com"
     }
 ],
