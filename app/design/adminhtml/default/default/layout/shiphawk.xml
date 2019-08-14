@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+    <adminhtml_catalog_product_edit>
+
+        <reference name="head">
+
+            <action method="addJs"><script>shiphawk/shiphawk.js</script></action>
+
+            <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
+
+        </reference>
+    </adminhtml_catalog_product_edit>
+
+    <adminhtml_catalog_product_new>
+        <reference name="head">
+
+            <action method="addJs"><script>shiphawk/shiphawk.js</script></action>
+
+            <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
+
+        </reference>
+    </adminhtml_catalog_product_new>
+
+</layout>
