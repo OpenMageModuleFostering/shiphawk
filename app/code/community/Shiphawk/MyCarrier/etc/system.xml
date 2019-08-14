@@ -56,6 +56,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </sort_order>
+
                         <!--
                             This value is used to specify whether
                             the carrier is available only for
@@ -90,6 +91,18 @@
                             <show_in_store>0</show_in_store>
                             <can_be_empty>1</can_be_empty>
                         </specificcountry>
+
+                        <free_method translate="label">
+                            <label>Free Method</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <frontend_class>free-method</frontend_class>
+                            <source_model>shiphawk_mycarrier/freemethod</source_model>
+                            <sort_order>1200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </free_method>
                     </fields>
                 </shiphawk_mycarrier>
             </groups>

@@ -36,16 +36,25 @@ class ShipHawk_MyCarrier_Model_Carrier
         }
 
         Mage::getSingleton('core/session')->setSHRateAarray($rateArray->rates);
-        foreach($rateArray->rates as $rateRow)
-        {
-            $result->append($this->_buildRate($rateRow));
+
+        $freeServices = array();
+
+        if ($request->getFreeShipping() === true) {
+            $freeServicesString = $this->getConfigData('free_method');
+            if ($freeServicesString) {
+                $freeServices = explode(",", $freeServicesString);
+            }
         }
 
+        foreach($rateArray->rates as $rateRow)
+        {
+            $result->append($this->_buildRate($rateRow, $freeServices));
+        }
 
         return $result;
     }
 
-    protected function _buildRate($shRate)
+    protected function _buildRate($shRate, $freeServices)
     {
         Mage::log('processing rate');
         Mage::log($shRate);
@@ -58,12 +67,17 @@ class ShipHawk_MyCarrier_Model_Carrier
          * carriers/[carrier_code]/[config_key]
          */
         $rate->setCarrierTitle($shRate->carrier);
-
-        $rate->setMethod($shRate->carrier. '-' . $shRate->service_name);
+        $rate->setMethod($shRate->service_name);
+        // $rate->setMethod($shRate->carrier. '-' . $shRate->service_name);
         $rate->setMethodTitle($shRate->service_name);
 
-        $rate->setPrice($shRate->price);
         $rate->setCost($shRate->price);
+
+        if (in_array($shRate->service_name, $freeServices)){
+            $rate->setPrice(0);
+        } else {
+            $rate->setPrice($shRate->price);
+        }
 
         return $rate;
     }
@@ -97,21 +111,44 @@ class ShipHawk_MyCarrier_Model_Carrier
         $skuColumn = Mage::getStoreConfig('shiphawk/datamapping/sku_column');
         Mage::log('getting sku from column: ' . $skuColumn, Zend_Log::INFO, 'shiphawk_rates.log', true);
         foreach ($request->getAllItems() as $item) {
-            $product_id = $item->getProductId();
-            $product = Mage::getModel('catalog/product')->load($product_id);
-            //commenting out log statment to make the logs more readable. Uncomment when debugging rating.
-            //Mage::log('product data: ' . var_export($product->debug(), true), Zend_Log::INFO, 'shiphawk_rates.log', true);
-            $items[] = array(
-                'product_sku' => $product->getData($skuColumn),
-                'quantity' => $item->getQty(),
-                'value'         => $item->getPrice(),
-                'length'        => $item->getLength(),
-                'width'         => $item->getWidth(),
-                'height'        => $item->getHeight(),
-                'weight'        => $item->getWeight(),
-                'item_type'     => $item->getWeight()  <= 70 ? 'parcel' : 'handling_unit',
-                'handling_unit_type' => $item->getWeight()  <= 70 ? '' : 'box'
-            );
+
+            if($option = $item->getOptionByCode('simple_product')) {
+
+                $product_id = $option->getProductId();
+                $product = Mage::getModel('catalog/product')->load($product_id);
+                //commenting out log statment to make the logs more readable. Uncomment when debugging rating.
+                //Mage::log('product data: ' . var_export($product->debug(), true), Zend_Log::INFO, 'shiphawk_rates.log', true);
+                $item_weight = $item->getWeight();
+                $items[] = array(
+                    'product_sku' => $product->getData($skuColumn),
+                    'quantity' => $item->getQty(),
+                    'value' => $option->getPrice(),
+                    'length' => $option->getLength(),
+                    'width' => $option->getWidth(),
+                    'height' => $option->getHeight(),
+                    'weight' => $item_weight <= 70 ? $item_weight * 16 : $item_weight,
+                    'item_type' => $item_weight <= 70 ? 'parcel' : 'handling_unit',
+                    'handling_unit_type' => $item_weight <= 70 ? '' : 'box'
+                );
+            }
+            else if( $item->getTypeId() != 'configurable' && !$item->getParentItemId() ){
+                $product_id = $item->getProductId();
+                $product = Mage::getModel('catalog/product')->load($product_id);
+                //commenting out log statment to make the logs more readable. Uncomment when debugging rating.
+                //Mage::log('product data: ' . var_export($product->debug(), true), Zend_Log::INFO, 'shiphawk_rates.log', true);
+                $item_weight = $item->getWeight();
+                $items[] = array(
+                    'product_sku' => $product->getData($skuColumn),
+                    'quantity' => $item->getQty(),
+                    'value' => $item->getPrice(),
+                    'length' => $item->getLength(),
+                    'width' => $item->getWidth(),
+                    'height' => $item->getHeight(),
+                    'weight' => $item_weight <= 70 ? $item_weight * 16 : $item_weight,
+                    'item_type' => $item_weight <= 70 ? 'parcel' : 'handling_unit',
+                    'handling_unit_type' => $item_weight <= 70 ? '' : 'box'
+                );
+            }
 
 
 
@@ -125,6 +162,62 @@ class ShipHawk_MyCarrier_Model_Carrier
 
     public function getAllowedMethods()
     {
-        return array();
+        return array(
+            'FedEx 2 Day'                                                   => 'FedEx 2 Day',
+            'FedEx 2 Day Am'                                                => 'FedEx 2 Day Am',
+            'FedEx Express Saver'                                           => 'FedEx Express Saver',
+            'FedEx First Overnight'                                         => 'FedEx First Overnight',
+            'FedEx First Overnight Saturday Delivery'                       => 'FedEx First Overnight Saturday Delivery',
+            'FedEx Ground'                                                  => 'FedEx Ground',
+            'FedEx Ground Home Delivery'                                    => 'FedEx Ground Home Delivery',
+            'FedEx International Economy'                                   => 'FedEx International Economy',
+            'FedEx International First'                                     => 'FedEx International First',
+            'FedEx International Ground'                                    => 'FedEx International Ground',
+            'FedEx International Priority'                                  => 'FedEx International Priority',
+            'FedEx Priority Overnight'                                      => 'FedEx Priority Overnight',
+            'FedEx Priority Overnight Saturday Delivery'                    => 'FedEx Priority Overnight Saturday Delivery',
+            'FedEx Standard Overnight'                                      => 'FedEx Standard Overnight',
+            'First Class Mail International'                                => 'First Class Mail International',
+            'First Class Package International Service'                     => 'First Class Package International Service',
+            'First-Class Mail'                                              => 'First-Class Mail',
+            'Global Express Guaranteed'                                     => 'Global Express Guaranteed',
+            'Library Mail'                                                  => 'Library Mail',
+            'Media Mail'                                                    => 'Media Mail',
+            'Parcel Select Ground'                                          => 'Parcel Select Ground',
+            'Priority Mail'                                                 => 'Priority Mail',
+            'Priority Mail Express'                                         => 'Priority Mail Express',
+            'Priority Mail Express Flat Rate Envelope'                      => 'Priority Mail Express Flat Rate Envelope',
+            'Priority Mail Express Flat Rate Legal Envelope'                => 'Priority Mail Express Flat Rate Legal Envelope',
+            'Priority Mail Express International'                           => 'Priority Mail Express International',
+            'Priority Mail Express International Flat Rate Envelope'        => 'Priority Mail Express International Flat Rate Envelope',
+            'Priority Mail Express International Flat Rate Legal Envelope'  => 'Priority Mail Express International Flat Rate Legal Envelope',
+            'Priority Mail Express International Flat Rate Padded Envelope' => 'Priority Mail Express International Flat Rate Padded Envelope',
+            'Priority Mail Flat Rate Envelope'                              => 'Priority Mail Flat Rate Envelope',
+            'Priority Mail Flat Rate Legal Envelope'                        => 'Priority Mail Flat Rate Legal Envelope',
+            'Priority Mail International'                                   => 'Priority Mail International',
+            'Priority Mail International Flat Rate Envelope'                => 'Priority Mail International Flat Rate Envelope',
+            'Priority Mail International Flat Rate Legal Envelope'          => 'Priority Mail International Flat Rate Legal Envelope',
+            'Priority Mail International Flat Rate Padded Envelope'         => 'Priority Mail International Flat Rate Padded Envelope',
+            'Priority Mail International Large Flat Rate Box'               => 'Priority Mail International Large Flat Rate Box',
+            'Priority Mail International Medium Flat Rate Box'              => 'Priority Mail International Medium Flat Rate Box',
+            'Priority Mail International Small Flat Rate Box'               => 'Priority Mail International Small Flat Rate Box',
+            'Priority Mail Large Flat Rate Box'                             => 'Priority Mail Large Flat Rate Box',
+            'Priority Mail Medium Flat Rate Box'                            => 'Priority Mail Medium Flat Rate Box',
+            'Priority Mail Small Flat Rate Box'                             => 'Priority Mail Small Flat Rate Box',
+            'UPS Ground'                                                    => 'UPS Ground',
+            'UPS Next Day Air'                                              => 'UPS Next Day Air',
+            'UPS Next Day Air Early'                                        => 'UPS Next Day Air Early',
+            'UPS Next Day Air Saver'                                        => 'UPS Next Day Air Saver',
+            'UPS Second Day Air'                                            => 'UPS Second Day Air',
+            'UPS Second Day Air A.M.'                                       => 'UPS Second Day Air A.M.',
+            'UPS Standard'                                                  => 'UPS Standard',
+            'UPS SurePost'                                                  => 'UPS SurePost',
+            'UPS Three-Day Select'                                          => 'UPS Three-Day Select',
+            'UPS Worldwide Expedited'                                       => 'UPS Worldwide Expedited',
+            'UPS Worldwide Express'                                         => 'UPS Worldwide Express',
+            'UPS Worldwide Express Freight'                                 => 'UPS Worldwide Express Freight',
+            'UPS Worldwide Express Plus'                                    => 'UPS Worldwide Express Plus',
+            'UPS Worldwide Saver'                                           => 'UPS Worldwide Saver'
+        );
     }
 }

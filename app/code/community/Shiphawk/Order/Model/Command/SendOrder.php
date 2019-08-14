@@ -25,24 +25,36 @@ class Shiphawk_Order_Model_Command_SendOrder
         }
 
         $skuColumn = Mage::getStoreConfig('shiphawk/datamapping/sku_column');
-        foreach ($order->getAllItems() as $item) {
-            /** @var Mage_Sales_Model_Order_Item $item */
+        $SimpleItems = array();
+        foreach($order->getAllVisibleItems() as $item){
+            if($item->getHasChildren()) {
+                foreach($item->getChildrenItems() as $child) {
+                    $SimpleItems[] = $child;
+                }
+            }
+            else if(!$item->getHasParent())  {
+                $SimpleItems[] = $item;
+            }
+        }
+
+        foreach ($SimpleItems as $item) {
             $product_id = $item->getProductId();
             $product = Mage::getModel('catalog/product')->load($product_id);
+            $item_weight = $item->getWeight();
             $itemsRequest[] = array(
-                'name'               => $item->getName(),
-                'sku'                => $product->getData($skuColumn),
-                'quantity'           => $item->getQtyOrdered(),
-                'value'              => $item->getPrice(),
-                'length'             => $item->getLength(),
-                'width'              => $item->getWidth(),
-                'height'             => $item->getHeight(),
-                'weight'             => $item->getWeight(),
-                'can_ship_parcel'    => true,
-                'item_type'          => $item->getWeight()  <= 70 ? 'parcel' : 'handling_unit',
-                'handling_unit_type' => $item->getWeight()  <= 70 ? '' : 'box'
+                'name' => $item->getName(),
+                'sku' => $product->getData($skuColumn),
+                'quantity' => $item->getQtyOrdered(),
+                'value' => $item->getPrice(),
+                'length' => $item->getLength(),
+                'width' => $item->getWidth(),
+                'height' => $item->getHeight(),
+                'weight' => $item_weight <= 70 ? $item_weight * 16 : $item_weight,
+                'can_ship_parcel' => true,
+                'item_type' => $item_weight <= 70 ? 'parcel' : 'handling_unit',
+                'handling_unit_type' => $item_weight <= 70 ? '' : 'box',
+                'source_system_id' => $item->getItemId()
             );
-
         }
 
         $orderRequest = json_encode(

@@ -1,13 +1,13 @@
 {
-    "name": "OpenMageModuleFostering/ShipHawk",
+    "name": "OpenMageModuleFostering/Shiphawk",
     "type": "magento-module",
-    "license": "OSL",
+    "license": "OSL-v3.0",
     "homepage": "",
-    "description": "-",
+    "description": "All-in-one shipping platform offering the best delivery network, in-cart rates, & post-purchase tracking.",
     "authors": [
     {
-        "name": "Mr. Shiphawk",
-        "email": "mikel@shiphawk.com"
+        "name": "ShipHawk",
+        "email": "contact@shiphawk.com"
     }
 ],
     "suggest": {
