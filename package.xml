@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <package>
     <name>ShipHawk</name>
-    <version>2.0.0</version>
-    <stability>alpha</stability>
-    <license>free</license>
+    <version>2.1.0</version>
+    <stability>stable</stability>
+    <license uri="https://opensource.org/licenses/osl-3.0.php">OSL</license>
     <channel>community</channel>
     <extends/>
     <summary>-</summary>
     <description>-</description>
     <notes>-</notes>
-    <authors><author><name>ShipHawk</name><user>MAG002779924</user><email>mikel@shiphawk.com</email></author></authors>
-    <date>2016-06-14</date>
-    <time>23:52:32</time>
-    <contents><target name="mageetc"><dir name="."><file name="Shiphawk_Order.xml" hash=""/><file name="Shiphawk_Shipping.xml" hash=""/></dir></target><target name="mageskin"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="mages"><dir name="shiphawk"><file name="shiphawkicon.png" hash=""/></dir></dir></dir></dir></dir></target><target name="magecommunity"><dir name="Shiphawk"><dir name="MyCarrier"><dir name="Model"><file name="Carrier.php" hash="4870fdb6200fb9f0370c2789072af9b5"/></dir><dir name="etc"><file name="config.xml" hash="6c79463b2a9d70f83020b21b8ab8f830"/><file name="system.xml" hash="5db176acade31f82578f55dc2f1babd2"/></dir></dir><dir name="Order"><dir name="Block"><dir name="System"><file name="Link.php" hash="c44c95b4b5f8b1d87038d9707a970737"/></dir></dir><dir name="Helper"><file name="Data.php" hash="1a2f8a93a310d337787a34c3d6f1ecbb"/></dir><dir name="Model"><dir name="Command"><file name="ChangeStatus.php" hash="f9b2e53cad39ba7d602948f46feeebc9"/><file name="CheckConfiguration.php" hash="7665245cf9f348e7e89fb27ef58175bc"/><file name="SendOrder.php" hash="44db22fb4bf285822e104a759bc4add3"/></dir><dir name="Cron"><file name="ProcessOrderForLast14Days.php" hash="b9559a7b8c90df810c8fb412883e9fbe"/></dir><dir name="Observer"><file name="Config.php" hash="e44707a0586a18fea8a69646ff21b74a"/><file name="Order.php" hash="d92b7b9a80faf66e044bee7650e4a779"/></dir><dir name="Source"><file name="Gateway.php" hash="dc0a5460921b1ef8e65a462c6485cf49"/></dir><file name="StatusMapper.php" hash="45807c1a7f87acffdb8fde23405433d5"/></dir><dir name="etc"><file name="config.xml" hash="45f8db84d11d7ba8b8df2319a06e59dc"/><file name="system.xml" hash="bb27d60d36aa676324802d56d252ddd5"/></dir></dir></dir></target></contents>
+    <authors><author><name>Mr. Shiphawk</name><user>MAG002779924</user><email>mikel@shiphawk.com</email></author></authors>
+    <date>2016-09-14</date>
+    <time>21:33:02</time>
+    <contents><target name="magecommunity"><dir name="Shiphawk"><dir name="MyCarrier"><dir name="Model"><file name="Carrier.php" hash="fd003dfedad54c6ece994d0906215b75"/></dir><dir name="etc"><file name="config.xml" hash="6c79463b2a9d70f83020b21b8ab8f830"/><file name="system.xml" hash="5db176acade31f82578f55dc2f1babd2"/></dir></dir><dir name="Order"><dir name="Block"><dir name="System"><file name="Link.php" hash="c44c95b4b5f8b1d87038d9707a970737"/></dir></dir><dir name="Helper"><file name="Data.php" hash="1a2f8a93a310d337787a34c3d6f1ecbb"/></dir><dir name="Model"><dir name="Command"><file name="ChangeStatus.php" hash="3d916b6ed60957849c27222bcaeb4672"/><file name="CheckConfiguration.php" hash="39b710b50ac78dc67346922609852f23"/><file name="SendOrder.php" hash="f54800166bd2e32e71dcf6ff9ab6ad26"/></dir><dir name="Cron"><file name="ProcessOrderForLast14Days.php" hash="b9559a7b8c90df810c8fb412883e9fbe"/></dir><dir name="Observer"><file name="Config.php" hash="e44707a0586a18fea8a69646ff21b74a"/><file name="Order.php" hash="89674e02cb81fe2d062defa09bbb4d22"/></dir><dir name="Source"><file name="Gateway.php" hash="18df9d2ee851cbbcd2654ed69c2b311c"/><file name="Ordersync.php" hash="a15ba0ffe025a8a190516b09ce826022"/></dir><file name="StatusMapper.php" hash="45807c1a7f87acffdb8fde23405433d5"/><file name=".DS_Store" hash="48224efb891e3116e137d10939de8b97"/></dir><dir name="etc"><file name="config.xml" hash="b0fcf5f9f7849b6d3313a222f50b8158"/><file name="system.xml" hash="fb7f76fbd0d21f3d89b51fa0378b61ce"/></dir></dir><file name=".DS_Store" hash="863d45df3ecb667ece8afbd72893d4b0"/></dir></target><target name="mageetc"><dir name="modules"><file name="Shiphawk_Order.xml" hash="41c5c882c390ff710b6632f2251165f5"/><file name="Shiphawk_Shipping.xml" hash="a9b0d8dcac01ccccef7f0f9ff52a7aba"/></dir></target><target name="mageskin"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="images"><file name="shiphawk" hash="d41d8cd98f00b204e9800998ecf8427e"/></dir></dir></dir></dir></target></contents>
     <compatible/>
-    <dependencies><required><php><min>5.0.1</min><max>6.0.0</max></php></required></dependencies>
+    <dependencies><required><php><min>5.2.0</min><max>7.0.0</max></php></required></dependencies>
 </package>

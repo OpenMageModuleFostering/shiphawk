@@ -1,12 +1,12 @@
 {
     "name": "OpenMageModuleFostering/ShipHawk",
     "type": "magento-module",
-    "license": "free",
+    "license": "OSL",
     "homepage": "",
     "description": "-",
     "authors": [
     {
-        "name": "ShipHawk",
+        "name": "Mr. Shiphawk",
         "email": "mikel@shiphawk.com"
     }
 ],

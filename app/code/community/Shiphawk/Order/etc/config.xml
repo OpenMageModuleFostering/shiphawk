@@ -67,6 +67,9 @@
                 <active>1</active>
                 <gateway_url>https://shiphawk.com/api/v4/</gateway_url>
             </order>
+            <datamapping>
+                <sku_column>name</sku_column>
+            </datamapping>
         </shiphawk>
     </default>
     <adminhtml>

@@ -17,7 +17,8 @@ class ShipHawk_MyCarrier_Model_Carrier
                 'zip'=>Mage::getStoreConfig('shipping/origin/postcode')
             ),
             'destination_address'=> array(
-                'zip'=>$to_zip = $request->getDestPostcode()
+                'zip'               =>  $to_zip = $request->getDestPostcode(),
+                'is_residential'    =>  'true'
             ),
             'apply_rules'=>'true'
         );
@@ -58,8 +59,8 @@ class ShipHawk_MyCarrier_Model_Carrier
          */
         $rate->setCarrierTitle($shRate->carrier);
 
-        $rate->setMethod($shRate->carrier. '-' . $shRate->service_level);
-        $rate->setMethodTitle($shRate->service_level);
+        $rate->setMethod($shRate->carrier. '-' . $shRate->service_name);
+        $rate->setMethodTitle($shRate->service_name);
 
         $rate->setPrice($shRate->price);
         $rate->setCost($shRate->price);
@@ -74,7 +75,8 @@ class ShipHawk_MyCarrier_Model_Carrier
 
         $jsonRateRequest = json_encode($rateRequest);
 
-        $client = new Zend_Http_Client($url . 'rates?api_key=' . $key);
+        $client = new Zend_Http_Client($url . 'rates');
+        $client->setHeaders('X-Api-Key', $key);
 
         Mage::log($jsonRateRequest, Zend_Log::INFO, 'shiphawk_rates.log', true);
 
@@ -92,10 +94,27 @@ class ShipHawk_MyCarrier_Model_Carrier
     public function getItems($request)
     {
         $items = array();
+        $skuColumn = Mage::getStoreConfig('shiphawk/datamapping/sku_column');
+        Mage::log('getting sku from column: ' . $skuColumn, Zend_Log::INFO, 'shiphawk_rates.log', true);
         foreach ($request->getAllItems() as $item) {
+            $product_id = $item->getProductId();
+            $product = Mage::getModel('catalog/product')->load($product_id);
+            //commenting out log statment to make the logs more readable. Uncomment when debugging rating.
+            //Mage::log('product data: ' . var_export($product->debug(), true), Zend_Log::INFO, 'shiphawk_rates.log', true);
             $items[] = array(
-                'product_sku' => $item->getSku()
+                'product_sku' => $product->getData($skuColumn),
+                'quantity' => $item->getQty(),
+                'value'         => $item->getPrice(),
+                'length'        => $item->getLength(),
+                'width'         => $item->getWidth(),
+                'height'        => $item->getHeight(),
+                'weight'        => $item->getWeight(),
+                'item_type'     => $item->getWeight()  <= 70 ? 'parcel' : 'handling_unit',
+                'handling_unit_type' => $item->getWeight()  <= 70 ? '' : 'box'
             );
+
+
+
         }
 
         Mage::log($items);
