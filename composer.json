@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Shiphawk",
+    "name": "OpenMageModuleFostering\/Shiphawk",
     "type": "magento-module",
     "license": "OSL-v3.0",
     "homepage": "",
     "description": "All-in-one shipping platform offering the best delivery network, in-cart rates, &amp; post-purchase tracking.",
     "authors": [
-    {
-        "name": "ShipHawk",
-        "email": "contact@shiphawk.com"
-    }
-],
+        {
+            "name": "ShipHawk",
+            "email": "contact@shiphawk.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
